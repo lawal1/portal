@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University of Delta - Retrieve Credentials</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #55074b;
+            --primary-dark: #44063b;
+            --background: #eeeeee;
+            --alert: #dbb2b7;
+            --white: #ffffff;
+            --text: #333333;
+            --light-text: #666666;
+            --border: #dddddd;
+            --success: #4caf50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header & Navigation */
+        header {
+            background-color: var(--primary);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo h1 {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .logo span {
+            color: #ffd700;
+        }
+        
+        .auth-buttons .btn {
+            background-color: white;
+            color: var(--primary);
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .auth-buttons .btn:hover {
+            background-color: #f0f0f0;
+            transform: translateY(-2px);
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 0;
+        }
+        
+        .registration-container {
+            width: 100%;
+            max-width: 800px;
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .registration-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .registration-header h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .registration-header p {
+            opacity: 0.9;
+        }
+        
+        .registration-body {
+            padding: 30px;
+        }
+        
+        .requirements-section {
+            background-color: #f9f9f9;
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 25px;
+        }
+        
+        .requirements-section h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .requirements-section h3 i {
+            margin-right: 10px;
+        }
+        
+        .requirements-section ul {
+            padding-left: 20px;
+        }
+        
+        .requirements-section li {
+            margin-bottom: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text);
+        }
+        
+        .required:after {
+            content: " *";
+            color: #e74c3c;
+        }
+        
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="text"]:focus,
+        input[type="email"]:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(85, 7, 75, 0.1);
+            outline: none;
+        }
+        
+        .form-note {
+            background-color: var(--alert);
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        
+        .hint {
+            font-size: 0.9rem;
+            color: var(--light-text);
+            margin-top: 8px;
+            font-style: italic;
+        }
+        
+        .submit-section {
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-primary i {
+            margin-right: 10px;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 30px 0 15px;
+            margin-top: auto;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-col h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+        
+        .footer-col ul {
+            list-style: none;
+        }
+        
+        .footer-col ul li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-col ul li a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-col ul li a:hover {
+            color: white;
+        }
+        
+        .contact-info li {
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .contact-info li i {
+            margin-right: 10px;
+            color: var(--primary);
+            margin-top: 5px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .registration-body {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <h1>UNI<span>DEL</span></h1>
+                </div>
+                
+                <div class="auth-buttons">
+                    <button class="btn">Login</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="registration-container">
+            <div class="registration-header">
+                <h2>Retrieve Your Credentials</h2>
+                <p>Request your login credentials to access the University of Delta portal</p>
+            </div>
+            
+            <div class="registration-body">
+                <div class="requirements-section">
+                    <h3><i class="fas fa-info-circle"></i> Important Information</h3>
+                    <ul>
+                        <li>All fields marked with <span style="color: #e74c3c;">*</span> are required</li>
+                        <li>Provide your unique identifier as used during registration</li>
+                        <li>Enter the email address associated with your account</li>
+                        <li>You will receive an email with your login credentials</li>
+                        <li>Contact support if you need to update your email address</li>
+                    </ul>
+                </div>
+                
+                <form action="https://unidel.waeup.org/changepw" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="form.identifier" class="required">Unique Identifier</label>
+                        <input type="text" id="form.identifier" name="form.identifier" placeholder="Enter your unique identifier" required>
+                        <div class="hint">User Name, Student or Applicant Id, Matriculation or Registration Number</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="form.email" class="required">Email Address</label>
+                        <input type="email" id="form.email" name="form.email" placeholder="example@email.com" required>
+                    </div>
+                    
+                    <div class="form-note">
+                        <p><strong>Note:</strong> Enter the email address stored in Kofa. You can't change your email address here. If you've forgotten your email address or the email address stored in Kofa is wrong or no longer valid, use the enquiries form to request a change of address.</p>
+                    </div>
+                    
+                    <div class="submit-section">
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-paper-plane"></i> Send Login Credentials to Email Address
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>University of Delta</h3>
+                    <p>P.M.B 2090, Agbor, Delta State</p>
+                    <p>Providing quality education since 1980. Our mission is to create knowledge and develop leaders.</p>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Applications</a></li>
+                        <li><a href="#">Admissions</a></li>
+                        <li><a href="#">Programs</a></li>
+                        <li><a href="#">Campus Life</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Contact Us</h3>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-map-marker-alt"></i> P.M.B 2090, Agbor, Delta State</li>
+                        <li><i class="fas fa-phone"></i> +234 802 117 4628</li>
+                        <li><i class="fas fa-envelope"></i> admissions@unidel.edu.ng</li>
+                        <li><i class="fas fa-clock"></i> Mon-Fri: 8:00 AM - 5:00 PM</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Student Support</h3>
+                    <ul>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Technical Support</a></li>
+                        <li><a href="#">Download Forms</a></li>
+                        <li><a href="#">Help Center</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2024 University of Delta. All Rights Reserved. | Kofa - Student Management System</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Form validation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const identifier = document.getElementById('form.identifier').value.trim();
+            const email = document.getElementById('form.email').value.trim();
+            
+            if (!identifier) {
+                alert('Please enter your unique identifier');
+                e.preventDefault();
+                return;
+            }
+            
+            if (!email) {
+                alert('Please enter your email address');
+                e.preventDefault();
+                return;
+            }
+            
+            // Validate email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Please enter a valid email address');
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>

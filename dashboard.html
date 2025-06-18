@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNIDEL Student Portal</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #1a237e;
+            --secondary: #3949ab;
+            --accent: #5c6bc0;
+            --light: #e8eaf6;
+            --dark: #0d0d2b;
+        }
+        
+        body {
+            background-color: #f5f7fb;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding-top: 70px;
+        }
+        
+        .navbar {
+            background-color: var(--primary);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .sidebar {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+            padding: 20px 0;
+            height: calc(100vh - 90px);
+            position: sticky;
+            top: 80px;
+        }
+        
+        .sidebar .nav-link {
+            color: #555;
+            padding: 12px 20px;
+            border-left: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .sidebar .nav-link:hover {
+            background-color: var(--light);
+            border-left: 3px solid var(--accent);
+        }
+        
+        .sidebar .nav-link.active {
+            background-color: var(--light);
+            color: var(--primary);
+            border-left: 3px solid var(--primary);
+            font-weight: 600;
+        }
+        
+        .sidebar .nav-link i {
+            width: 24px;
+            text-align: center;
+            margin-right: 10px;
+        }
+        
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: none;
+            margin-bottom: 25px;
+            transition: transform 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid #eaeaea;
+            font-weight: 600;
+            padding: 15px 20px;
+            border-radius: 10px 10px 0 0 !important;
+        }
+        
+        .user-info {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        .profile-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--light);
+        }
+        
+        .badge-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+        
+        .progress {
+            height: 8px;
+            margin-top: 8px;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-completed {
+            background-color: #4caf50;
+        }
+        
+        .status-pending {
+            background-color: #ff9800;
+        }
+        
+        .status-not-started {
+            background-color: #f44336;
+        }
+        
+        .tab-content {
+            padding: 20px;
+            background: white;
+            border-radius: 0 0 10px 10px;
+        }
+        
+        .nav-tabs .nav-link {
+            border: none;
+            padding: 15px 25px;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        .nav-tabs .nav-link.active {
+            background: none;
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .user-welcome {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .page-title {
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #f44336;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .dashboard-section {
+            margin-bottom: 30px;
+        }
+        
+        .action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            text-align: center;
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 10px rgba(0,0,0,0.1);
+            color: var(--primary);
+        }
+        
+        .action-btn i {
+            display: block;
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        .footer {
+            background-color: var(--dark);
+            color: #aaa;
+            padding: 30px 0;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-graduation-cap me-2"></i>UNIDEL STUDENT PORTAL</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="notificationsDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge">3</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="#"><i class="fas fa-book me-2"></i>New course available</a>
+                            <a class="dropdown-item" href="#"><i class="fas fa-money-bill-wave me-2"></i>Fee payment reminder</a>
+                            <a class="dropdown-item" href="#"><i class="fas fa-calendar me-2"></i>Exam schedule updated</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            <img src="https://ui-avatars.com/api/?name=John+Doe&background=random" class="rounded-circle me-2" width="30" height="30" alt="User">
+                            John Doe
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>My Profile</a>
+                            <a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Sidebar Navigation -->
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <div class="user-info text-center mb-4">
+                        <img src="https://ui-avatars.com/api/?name=John+Doe&background=3949ab&color=fff&size=128" class="profile-img mb-3" alt="Student">
+                        <h5 class="mb-1">John Doe</h5>
+                        <p class="text-muted mb-2">Computer Science</p>
+                        <span class="badge bg-success badge-status">Active</span>
+                    </div>
+                    
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-home"></i> Dashboard</a>
+                        </li>
+                        
+                        <li class="nav-item mt-3">
+                            <span class="nav-link disabled fw-bold">MY DATA</span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-user"></i> Biodata</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-address-book"></i> Contact Info</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-users"></i> Next of Kin</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-user-shield"></i> Parents/Guardian</a>
+                        </li>
+                        
+                        <li class="nav-item mt-3">
+                            <span class="nav-link disabled fw-bold">MY STUDY</span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-check-circle"></i> Clearance</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-chart-line"></i> Study Status</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-book"></i> Course Registration</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-chart-bar"></i> Results</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-id-card"></i> ID Card</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-clipboard-check"></i> Screening Status</a>
+                        </li>
+                        
+                        <li class="nav-item mt-3">
+                            <span class="nav-link disabled fw-bold">HOSTEL</span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-bed"></i> Accommodation</a>
+                        </li>
+                        
+                        <li class="nav-item mt-3">
+                            <span class="nav-link disabled fw-bold">OTHER</span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-money-bill-wave"></i> Fee Payment</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-calendar-alt"></i> Academic Calendar</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <div class="dashboard-header">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h2 class="user-welcome">Welcome back, John!</h2>
+                            <p class="mb-0">You have 3 new notifications and 2 pending tasks</p>
+                        </div>
+                        <div class="col-md-4 text-md-end">
+                            <div class="d-flex justify-content-md-end">
+                                <span class="badge bg-light text-dark me-2">Current Session: 2024/2025</span>
+                                <span class="badge bg-light text-dark">Semester: First</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-3 mb-4">
+                        <a href="#" class="action-btn">
+                            <div>
+                                <i class="fas fa-book"></i>
+                                Course Registration
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <a href="#" class="action-btn">
+                            <div>
+                                <i class="fas fa-file-invoice-dollar"></i>
+                                Fee Payment
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <a href="#" class="action-btn">
+                            <div>
+                                <i class="fas fa-id-card"></i>
+                                ID Card
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <a href="#" class="action-btn">
+                            <div>
+                                <i class="fas fa-bed"></i>
+                                Hostel Booking
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <span>Academic Progress</span>
+                                <span class="badge bg-primary">Current Semester</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-4">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>Course Registration</span>
+                                        <span>80%</span>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" style="width: 80%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>Fee Payment</span>
+                                        <span>100%</span>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>Clearance</span>
+                                        <span>40%</span>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-warning" style="width: 40%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>Screening</span>
+                                        <span>0%</span>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-danger" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                Recent Notifications
+                            </div>
+                            <div class="card-body p-0">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <div class="d-flex">
+                                            <div class="flex-shrink-0 me-3">
+                                                <i class="fas fa-calendar text-primary"></i>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <h6 class="mb-1">Exam Schedule Updated</h6>
+                                                <p class="mb-0 text-muted">The examination timetable for the current semester has been released.</p>
+                                                <small class="text-muted">2 hours ago</small>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="d-flex">
+                                            <div class="flex-shrink-0 me-3">
+                                                <i class="fas fa-book text-success"></i>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <h6 class="mb-1">Course Registration Reminder</h6>
+                                                <p class="mb-0 text-muted">Deadline for course registration is approaching.</p>
+                                                <small class="text-muted">1 day ago</small>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="d-flex">
+                                            <div class="flex-shrink-0 me-3">
+                                                <i class="fas fa-money-bill-wave text-info"></i>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <h6 class="mb-1">Fee Payment Confirmation</h6>
+                                                <p class="mb-0 text-muted">Your tuition fee payment has been confirmed.</p>
+                                                <small class="text-muted">3 days ago</small>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                Quick Stats
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-6 mb-4">
+                                        <div class="stat-card">
+                                            <i class="fas fa-book fa-2x text-primary"></i>
+                                            <div class="stat-number">5</div>
+                                            <div class="stat-label">Registered Courses</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 mb-4">
+                                        <div class="stat-card">
+                                            <i class="fas fa-credit-card fa-2x text-success"></i>
+                                            <div class="stat-number">₦125,000</div>
+                                            <div class="stat-label">Fee Paid</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="stat-card">
+                                            <i class="fas fa-calendar-check fa-2x text-info"></i>
+                                            <div class="stat-number">14</div>
+                                            <div class="stat-label">Days to Exams</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="stat-card">
+                                            <i class="fas fa-graduation-cap fa-2x text-warning"></i>
+                                            <div class="stat-number">3.75</div>
+                                            <div class="stat-label">Current GPA</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                Clearance Status
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <span class="status-indicator status-completed"></span>
+                                        <span>Tuition Fee Payment</span>
+                                        <span class="ms-auto badge bg-success">Completed</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <span class="status-indicator status-pending"></span>
+                                        <span>Library Clearance</span>
+                                        <span class="ms-auto badge bg-warning">Pending</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <span class="status-indicator status-not-started"></span>
+                                        <span>Departmental Clearance</span>
+                                        <span class="ms-auto badge bg-danger">Not Started</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <span class="status-indicator status-not-started"></span>
+                                        <span>Faculty Clearance</span>
+                                        <span class="ms-auto badge bg-danger">Not Started</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <span class="status-indicator status-not-started"></span>
+                                        <span>ICT Clearance</span>
+                                        <span class="ms-auto badge bg-danger">Not Started</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-graduation-cap me-2"></i>UNIDEL Student Portal</h5>
+                    <p>Providing students with seamless access to academic resources and administrative services.</p>
+                </div>
+                <div class="col-md-3">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-muted">Academic Calendar</a></li>
+                        <li><a href="#" class="text-muted">Course Catalog</a></li>
+                        <li><a href="#" class="text-muted">Student Handbook</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Support</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-muted">Help Desk</a></li>
+                        <li><a href="#" class="text-muted">FAQs</a></li>
+                        <li><a href="#" class="text-muted">Contact IT Support</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="bg-light">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0">© 2025 University of Delta. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0">Kofa - Student Management System</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Simple dashboard functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update current time
+            function updateTime() {
+                const now = new Date();
+                document.getElementById('current-time').textContent = now.toLocaleTimeString();
+            }
+            setInterval(updateTime, 1000);
+            updateTime();
+            
+            // Handle sidebar navigation
+            const navLinks = document.querySelectorAll('.sidebar .nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

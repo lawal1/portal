@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNIDEL Student Portal - My Data</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #55074b;
+            --secondary: #7a0a6a;
+            --accent: #9b0d89;
+            --light: #f5f0f5;
+            --dark: #0d0d2b;
+            --alert: #dbb2b7;
+            --page-bg: #eeeeee;
+            --success: #4caf50;
+        }
+        
+        body {
+            background-color: var(--page-bg);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding-top: 70px;
+        }
+        
+        .navbar {
+            background-color: var(--primary);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: white !important;
+        }
+        
+        .sidebar {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+            padding: 20px 0;
+            height: calc(100vh - 90px);
+            position: sticky;
+            top: 80px;
+        }
+        
+        .sidebar .nav-link {
+            color: #555;
+            padding: 12px 20px;
+            border-left: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .sidebar .nav-link:hover {
+            background-color: var(--light);
+            border-left: 3px solid var(--accent);
+        }
+        
+        .sidebar .nav-link.active {
+            background-color: var(--light);
+            color: var(--primary);
+            border-left: 3px solid var(--primary);
+            font-weight: 600;
+        }
+        
+        .sidebar .nav-link i {
+            width: 24px;
+            text-align: center;
+            margin-right: 10px;
+        }
+        
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .user-info {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        .profile-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--light);
+        }
+        
+        .badge-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+        
+        .user-welcome {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #f44336;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .footer {
+            background-color: var(--primary);
+            color: #f0f0f0;
+            padding: 30px 0;
+            margin-top: 40px;
+        }
+        
+        /* Form Styles */
+        .form-container {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            transition: all 0.4s ease;
+            opacity: 0.5;
+            max-height: 0;
+            overflow: hidden;
+            transform: translateY(20px);
+        }
+        
+        .form-container.active {
+            opacity: 1;
+            max-height: 2000px;
+            transform: translateY(0);
+        }
+        
+        .form-header {
+            color: var(--primary);
+            border-bottom: 2px solid var(--light);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .form-section {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            color: #555;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary);
+            border-color: var(--secondary);
+        }
+        
+        .alert-box {
+            background-color: var(--alert);
+            border: 1px solid #c99da1;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .required::after {
+            content: " *";
+            color: #e32;
+        }
+        
+        /* Mobile specific styles */
+        @media (max-width: 991px) {
+            .sidebar {
+                height: auto;
+                position: relative;
+                top: 0;
+                margin-bottom: 20px;
+            }
+            
+            .user-info {
+                text-align: center;
+            }
+        }
+        
+        /* Progress indicator */
+        .progress-container {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin: 30px 0;
+        }
+        
+        .progress-steps::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            height: 4px;
+            width: 100%;
+            background-color: #e0e0e0;
+            z-index: 1;
+        }
+        
+        .progress-bar {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            height: 4px;
+            width: 0%;
+            background-color: var(--primary);
+            z-index: 2;
+            transition: width 0.4s ease;
+        }
+        
+        .step {
+            background-color: #fff;
+            color: #999;
+            border-radius: 50%;
+            height: 50px;
+            width: 50px;
+            border: 3px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 3;
+            font-weight: bold;
+        }
+        
+        .step.active {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .step.completed {
+            background-color: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+        
+        .step-label {
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            font-size: 14px;
+            color: #777;
+        }
+        
+        .form-status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .status-pending {
+            background-color: #ffecb3;
+            color: #ff9800;
+        }
+        
+        .status-completed {
+            background-color: #c8e6c9;
+            color: #388e3c;
+        }
+        
+        .status-locked {
+            background-color: #f5f5f5;
+            color: #9e9e9e;
+        }
+        
+        .form-icon {
+            background-color: var(--light);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            margin-right: 15px;
+        }
+        
+        .form-title-container {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-graduation-cap me-2"></i>UNIDEL STUDENT PORTAL</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="notificationsDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge">3</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="#"><i class="fas fa-book me-2"></i>New course available</a>
+                            <a class="dropdown-item" href="#"><i class="fas fa-money-bill-wave me-2"></i>Fee payment reminder</a>
+                            <a class="dropdown-item" href="#"><i class="fas fa-calendar me-2"></i>Exam schedule updated</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            <img src="https://ui-avatars.com/api/?name=John+Doe&background=random" class="rounded-circle me-2" width="30" height="30" alt="User">
+                            John Doe
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>My Profile</a>
+                            <a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Sidebar Navigation -->
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <div class="user-info text-center mb-4">
+                        <img src="https://ui-avatars.com/api/?name=John+Doe&background=55074b&color=fff&size=128" class="profile-img mb-3" alt="Student">
+                        <h5 class="mb-1">John Doe</h5>
+                        <p class="text-muted mb-2">Computer Science</p>
+                        <span class="badge bg-success badge-status">Active</span>
+                    </div>
+                    
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-home"></i> Dashboard</a>
+                        </li>
+                        
+                        <li class="nav-item mt-3">
+                            <span class="nav-link disabled fw-bold">MY DATA</span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#"><i class="fas fa-user"></i> Biodata</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-address-book"></i> Contact Info</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-users"></i> Next of Kin</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-user-shield"></i>Parent</a>
+                        </li>
+                        
+                        <li class="nav-item mt-3">
+                            <a class="nav-link" href="#"><i class="fas fa-money-bill-wave"></i> Fee Payment</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-calendar-alt"></i> Academic Calendar</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <!-- Dashboard header hidden on mobile -->
+                <div class="d-none d-lg-block">
+                    <div class="dashboard-header">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h2 class="user-welcome">Welcome back, John!</h2>
+                                <p class="mb-0">Complete your data forms to finalize your registration</p>
+                            </div>
+                            <div class="col-md-4 text-md-end">
+                                <div class="d-flex justify-content-md-end">
+                                    <span class="badge bg-light text-dark me-2">Current Session: 2024/2025</span>
+                                    <span class="badge bg-light text-dark">Semester: First</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Alert -->
+                <div class="alert-box">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    Please complete each section in order. The next section will unlock after you complete the current one.
+                </div>
+                
+                <!-- Progress indicator -->
+                <div class="progress-container">
+                    <h3>Data Completion Progress</h3>
+                    <div class="progress-steps">
+                        <div class="progress-bar" id="form-progress-bar"></div>
+                        <div class="step active" id="step-1">
+                            1
+                            <span class="step-label">Biodata</span>
+                        </div>
+                        <div class="step" id="step-2">
+                            2
+                            <span class="step-label">Contact Info</span>
+                        </div>
+                        <div class="step" id="step-3">
+                            3
+                            <span class="step-label">Next of Kin</span>
+                        </div>
+                        <div class="step" id="step-4">
+                            4
+                            <span class="step-label">Parents/Guardian</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Biodata Form -->
+                <div class="form-container active" id="biodata-form">
+                    <div class="form-header">
+                        <div class="form-title-container">
+                            <div class="form-icon">
+                                <i class="fas fa-user fa-lg"></i>
+                            </div>
+                            <div>
+                                <h3 class="mb-0">Biodata Form</h3>
+                                <small>Step 1 of 4</small>
+                            </div>
+                        </div>
+                        <span class="form-status status-pending">In Progress</span>
+                    </div>
+                    <form id="biodata-form-data">
+                        <div class="row">
+                            <div class="col-md-6 form-section">
+                                <label for="fullName" class="form-label required">Full Name</label>
+                                <input type="text" class="form-control" id="fullName" placeholder="Enter your full name" required>
+                            </div>
+                            <div class="col-md-6 form-section">
+                                <label for="matricNumber" class="form-label required">Matriculation Number</label>
+                                <input type="text" class="form-control" id="matricNumber" placeholder="Enter your matric number" required>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 form-section">
+                                <label for="dob" class="form-label required">Date of Birth</label>
+                                <input type="date" class="form-control" id="dob" required>
+                            </div>
+                            <div class="col-md-6 form-section">
+                                <label for="gender" class="form-label required">Gender</label>
+                                <select class="form-select" id="gender" required>
+                                    <option value="" selected disabled>Select gender</option>
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 form-section">
+                                <label for="nationality" class="form-label required">Nationality</label>
+                                <input type="text" class="form-control" id="nationality" placeholder="Enter your nationality" required>
+                            </div>
+                            <div class="col-md-6 form-section">
+                                <label for="state" class="form-label required">State of Origin</label>
+                                <input type="text" class="form-control" id="state" placeholder="Enter your state of origin" required>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 form-section">
+                                <label for="religion" class="form-label">Religion</label>
+                                <input type="text" class="form-control" id="religion" placeholder="Enter your religion">
+                            </div>
+                            <div class="col-md-6 form-section">
+                                <label for="maritalStatus" class="form-label">Marital Status</label>
+                                <select class="form-select" id="maritalStatus">
+                                    <option value="" selected disabled>Select status</option>
+                                    <option>Single</option>
+                                    <option>Married</option>
+                                    <option>Divorced</option>
+                                    <option>Widowed</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="text-end mt-4">
+                            <button type="submit" class="btn btn-primary px-4">Save & Continue</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Contact Information Form -->
+                <div class="form-container" id="contact-form">
+                    <div class="form-header">
+                        <div class="form-title-container">
+                            <div class="form-icon">
+                                <i class="fas fa-address-book fa-lg"></i>
+                            </div>
+                            <div>
+                                <h3 class="mb-0">Contact Information</h3>
+                                <small>Step 2 of 4</small>
+                            </div>
+                        </div>
+                        <span class="form-status status-locked">Locked</span>
+                    </div>
+                    <form id="contact-form-data">
+                        <div class="row">
+                            <div class="col-md-6 form-section">
+                                <label for="email" class="form-label required">Email Address</label>
+                                <input type="email" class="form-control" id="email" placeholder="Enter your email address" disabled required>
+                            </div>
+                            <div class="col-md-6 form-section">
+                                <label for="phone" class="form-label required">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" placeholder="Enter your phone number" disabled required>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 form-section">
+                                <label for="address" class="form-label required">Residential Address</label>
+                                <textarea class="form-control" id="address" rows="3" placeholder="Enter your full address" disabled required></textarea>
+                            </div>
+                            <div class="col-md-6 form-section">
+                                <label for="emergencyContact" class="form-label required">Emergency Contact</label>
+                                <input type="text" class="form-control" id="emergencyContact" placeholder="Enter emergency contact name" disabled required>
+                                <div class="mt-2">
+                                    <input type="tel" class="form-control" id="emergencyPhone" placeholder="Enter emergency phone number" disabled required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 form-section">
+                                <label for="socialMedia" class="form-label">Social Media</label>
+                                <input type="text" class="form-control" id="socialMedia" placeholder="Enter your social media handles" disabled>
+                            </div>
+                        </div>
+                        
+                        <div class="text-end mt-4">
+                            <button type="submit" class="btn btn-primary px-4" disabled>Save & Continue</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Next of Kin Form -->
+                <div class="form-container" id="kin-form">
+                    <div class="form-header">
+                        <div class="form-title-container">
+                            <div class="form-icon">
+                                <i class="fas fa-users fa-lg"></i>
+                            </div>
+                            <div>
+                                <h3 class="mb-0">Next of Kin Information</h3>
+                                <small>Step 3 of 4</small>
+                            </div>
+                        </div>
+                        <span class="form-status status-locked">Locked</span>
+                    </div>
+                    <form id="kin-form-data">
+                        <div class="row">
+                            <div class="col-md-6 form-section">
+                                <label for="kinName" class="form-label required">Full Name</label>
+                                <input type="text" class="form-control" id="kinName" placeholder="Enter next of kin's full name" disabled required>
+                            </div>
+                            <div class="col-md-6 form-section">
+                                <label for="relationship" class="form-label required">Relationship</label>
+                                <select class="form-select" id="relationship" disabled required>
+                                    <option value="" selected disabled>Select relationship</option>
+                                    <option>Parent</option>
+                                    <option>Sibling</option>
+                                    <option>Spouse</option>
+                                    <option>Child</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 form-section">
+                                <label for="kinPhone" class="form-label required">Phone Number</label>
+                                <input type="tel" class="form-control" id="kinPhone" placeholder="Enter next of kin's phone number" disabled required>
+                            </div>
+                            <div class="col-md-6 form-section">
+                                <label for="kinEmail" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="kinEmail" placeholder="Enter next of kin's email" disabled>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-12 form-section">
+                                <label for="kinAddress" class="form-label required">Address</label>
+                                <textarea class="form-control" id="kinAddress" rows="3" placeholder="Enter next of kin's full address" disabled required></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="text-end mt-4">
+                            <button type="submit" class="btn btn-primary px-4" disabled>Save & Continue</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Parents/Guardian Form -->
+                <div class="form-container" id="parents-form">
+                    <div class="form-header">
+                        <div class="form-title-container">
+                            <div class="form-icon">
+                                <i class="fas fa-user-shield fa-lg"></i>
+                            </div>
+                            <div>
+                                <h3 class="mb-0">Parents/Guardian Information</h3>
+                                <small>Step 4 of 4</small>
+                            </div>
+                        </div>
+                        <span class="form-status status-locked">Locked</span>
+                    </div>
+                    <form id="parents-form-data">
+                        <div class="row">
+                            <div class="col-md-6 form-section">
+                                <label for="fatherName" class="form-label">Father's Name</label>
+                                <input type="text" class="form-control" id="fatherName" placeholder="Enter father's full name" disabled>
+                            </div>
+                            <div class="col-md-6 form-section">
+                                <label for="fatherOccupation" class="form-label">Father's Occupation</label>
+                                <input type="text" class="form-control" id="fatherOccupation" placeholder="Enter father's occupation" disabled>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 form-section">
+                                <label for="motherName" class="form-label">Mother's Name</label>
+                                <input type="text" class="form-control" id="motherName" placeholder="Enter mother's full name" disabled>
+                            </div>
+                            <div class="col-md-6 form-section">
+                                <label for="motherOccupation" class="form-label">Mother's Occupation</label>
+                                <input type="text" class="form-control" id="motherOccupation" placeholder="Enter mother's occupation" disabled>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 form-section">
+                                <label for="guardianName" class="form-label">Guardian's Name (if applicable)</label>
+                                <input type="text" class="form-control" id="guardianName" placeholder="Enter guardian's full name" disabled>
+                            </div>
+                            <div class="col-md-6 form-section">
+                                <label for="guardianRelationship" class="form-label">Relationship to Guardian</label>
+                                <input type="text" class="form-control" id="guardianRelationship" placeholder="Enter relationship" disabled>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-12 form-section">
+                                <label for="parentsAddress" class="form-label">Parents/Guardian Address</label>
+                                <textarea class="form-control" id="parentsAddress" rows="3" placeholder="Enter parents/guardian's full address" disabled></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="text-end mt-4">
+                            <button type="submit" class="btn btn-primary px-4" disabled>Complete Registration</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Completion Message -->
+                <div class="alert-box d-none" id="completion-message">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-check-circle fa-2x text-success me-3"></i>
+                        <div>
+                            <h3 class="mb-1">Registration Complete!</h3>
+                            <p class="mb-0">All your data has been successfully submitted. You can now proceed to other sections of the portal.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-graduation-cap me-2"></i>UNIDEL Student Portal</h5>
+                    <p>Providing students with seamless access to academic resources and administrative services.</p>
+                </div>
+                <div class="col-md-3">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light">Academic Calendar</a></li>
+                        <li><a href="#" class="text-light">Course Catalog</a></li>
+                        <li><a href="#" class="text-light">Student Handbook</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Support</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light">Help Desk</a></li>
+                        <li><a href="#" class="text-light">FAQs</a></li>
+                        <li><a href="#" class="text-light">Contact IT Support</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="bg-light">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0">© 2025 University of Delta. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0">Kofa - Student Management System</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Form state management
+            const formState = {
+                biodata: false,
+                contact: false,
+                kin: false,
+                parents: false
+            };
+            
+            // Form elements
+            const forms = {
+                biodata: document.getElementById('biodata-form'),
+                contact: document.getElementById('contact-form'),
+                kin: document.getElementById('kin-form'),
+                parents: document.getElementById('parents-form')
+            };
+            
+            // Progress elements
+            const steps = {
+                1: document.getElementById('step-1'),
+                2: document.getElementById('step-2'),
+                3: document.getElementById('step-3'),
+                4: document.getElementById('step-4')
+            };
+            
+            const progressBar = document.getElementById('form-progress-bar');
+            
+            // Form submission handlers
+            document.getElementById('biodata-form-data').addEventListener('submit', function(e) {
+                e.preventDefault();
+                formState.biodata = true;
+                updateFormState();
+                unlockForm('contact');
+            });
+            
+            document.getElementById('contact-form-data').addEventListener('submit', function(e) {
+                e.preventDefault();
+                formState.contact = true;
+                updateFormState();
+                unlockForm('kin');
+            });
+            
+            document.getElementById('kin-form-data').addEventListener('submit', function(e) {
+                e.preventDefault();
+                formState.kin = true;
+                updateFormState();
+                unlockForm('parents');
+            });
+            
+            document.getElementById('parents-form-data').addEventListener('submit', function(e) {
+                e.preventDefault();
+                formState.parents = true;
+                updateFormState();
+                
+                // Show completion message
+                document.getElementById('completion-message').classList.remove('d-none');
+            });
+            
+            // Update form state and progress
+            function updateFormState() {
+                // Update progress bar
+                const completedCount = Object.values(formState).filter(status => status).length;
+                const progressPercentage = (completedCount / 4) * 100;
+                progressBar.style.width = `${progressPercentage}%`;
+                
+                // Update step indicators
+                if (formState.biodata) {
+                    steps[1].classList.remove('active');
+                    steps[1].classList.add('completed');
+                    document.querySelector('#biodata-form .form-status').className = 'form-status status-completed';
+                    document.querySelector('#biodata-form .form-status').textContent = 'Completed';
+                }
+                
+                if (formState.contact) {
+                    steps[2].classList.remove('active');
+                    steps[2].classList.add('completed');
+                    document.querySelector('#contact-form .form-status').className = 'form-status status-completed';
+                    document.querySelector('#contact-form .form-status').textContent = 'Completed';
+                }
+                
+                if (formState.kin) {
+                    steps[3].classList.remove('active');
+                    steps[3].classList.add('completed');
+                    document.querySelector('#kin-form .form-status').className = 'form-status status-completed';
+                    document.querySelector('#kin-form .form-status').textContent = 'Completed';
+                }
+                
+                if (formState.parents) {
+                    steps[4].classList.remove('active');
+                    steps[4].classList.add('completed');
+                    document.querySelector('#parents-form .form-status').className = 'form-status status-completed';
+                    document.querySelector('#parents-form .form-status').textContent = 'Completed';
+                }
+            }
+            
+            // Unlock the next form
+            function unlockForm(formName) {
+                const form = forms[formName];
+                form.classList.add('active');
+                
+                // Set next step as active
+                if (formName === 'contact') {
+                    steps[2].classList.add('active');
+                    document.querySelector('#contact-form .form-status').className = 'form-status status-pending';
+                    document.querySelector('#contact-form .form-status').textContent = 'In Progress';
+                } else if (formName === 'kin') {
+                    steps[3].classList.add('active');
+                    document.querySelector('#kin-form .form-status').className = 'form-status status-pending';
+                    document.querySelector('#kin-form .form-status').textContent = 'In Progress';
+                } else if (formName === 'parents') {
+                    steps[4].classList.add('active');
+                    document.querySelector('#parents-form .form-status').className = 'form-status status-pending';
+                    document.querySelector('#parents-form .form-status').textContent = 'In Progress';
+                }
+                
+                // Enable form inputs
+                const inputs = form.querySelectorAll('input, select, textarea, button');
+                inputs.forEach(input => {
+                    input.disabled = false;
+                });
+                
+                // Scroll to the next form
+                form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            
+            // Handle sidebar navigation
+            const navLinks = document.querySelectorAll('.sidebar .nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

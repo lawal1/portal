@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University of Delta - Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #55074b;
+            --primary-dark: #44063b;
+            --background: #eeeeee;
+            --alert: #dbb2b7;
+            --white: #ffffff;
+            --text: #333333;
+            --light-text: #666666;
+            --border: #dddddd;
+            --success: #4caf50;
+            --danger: #e74c3c;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header & Navigation */
+        header {
+            background-color: var(--primary);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo h1 {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .logo span {
+            color: #ffd700;
+        }
+        
+        .auth-buttons .btn {
+            background-color: white;
+            color: var(--primary);
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .auth-buttons .btn:hover {
+            background-color: #f0f0f0;
+            transform: translateY(-2px);
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 0;
+        }
+        
+        .login-container {
+            width: 100%;
+            max-width: 600px;
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .login-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .login-header h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .login-header p {
+            opacity: 0.9;
+        }
+        
+        .login-body {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text);
+        }
+        
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(85, 7, 75, 0.1);
+            outline: none;
+        }
+        
+        .case-sensitive-notice {
+            color: var(--danger);
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        
+        .btn-primary i {
+            margin-right: 10px;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .support-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .support-section p {
+            margin-bottom: 15px;
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+            margin-top: 5px;
+        }
+        
+        .btn-success:hover {
+            background-color: #43a047;
+            transform: translateY(-2px);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 30px 0 15px;
+            margin-top: auto;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-col h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+        
+        .footer-col ul {
+            list-style: none;
+        }
+        
+        .footer-col ul li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-col ul li a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-col ul li a:hover {
+            color: white;
+        }
+        
+        .contact-info li {
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .contact-info li i {
+            margin-right: 10px;
+            color: var(--primary);
+            margin-top: 5px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .login-body {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <h1>UNI<span>DEL</span></h1>
+                </div>
+                
+                <div class="auth-buttons">
+                    <button class="btn">Register</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="login-container">
+            <div class="login-header">
+                <h2>Access Your Account</h2>
+                <p>Sign in to the University of Delta application portal</p>
+            </div>
+            
+            <div class="login-body">
+                <form method="post" class="form-horizontal">
+                    <div class="form-group">
+                        <label for="login">User Name or ID</label>
+                        <input name="form.login" type="text" class="form-control" id="login" placeholder="Enter your username or ID">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input name="form.password" type="password" class="form-control" id="password" placeholder="Enter your password">
+                        <div class="case-sensitive-notice">
+                            <i class="fas fa-exclamation-circle"></i> Notice: User names, IDs and passwords are case sensitive.
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" name="camefrom">
+                    <button type="submit" class="btn-primary" name="SUBMIT">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                    
+                    <div class="support-section">
+                        <p><i class="fas fa-info-circle"></i> Don't forget to logout or exit your browser when you're done. If you are having trouble logging in, make sure to enable cookies in your web browser.</p>
+                        
+                        <p>
+                            <i class="fas fa-user-plus"></i> You don't have an account because you are a fresh student, or your student record has just been created?
+                            <br>
+                            <a href="requestpw" class="btn-success">
+                                <i class="fas fa-user-graduate"></i> Initialize your student account
+                            </a>
+                        </p>
+                        
+                        <p>
+                            <i class="fas fa-key"></i> Or simply forgot your student ID, applicant ID or password?
+                            <br>
+                            <a href="changepw" class="btn-success">
+                                <i class="fas fa-unlock-alt"></i> Request a new password
+                            </a>
+                        </p>
+                        
+                        <p>
+                            <i class="fas fa-users"></i> You are student parents and want to monitor study progress of your child?
+                            <br>
+                            <a href="requestppw" class="btn-success">
+                                <i class="fas fa-user-friends"></i> Request a temporary parents password
+                            </a>
+                            <br>
+                            <small>Prerequisite for getting parents access is that you have a valid email address and that this address has been entered by the student into the parents' email address field.</small>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>University of Delta</h3>
+                    <p>P.M.B 2090, Agbor, Delta State</p>
+                    <p>Providing quality education since 1980. Our mission is to create knowledge and develop leaders.</p>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Applications</a></li>
+                        <li><a href="#">Admissions</a></li>
+                        <li><a href="#">Programs</a></li>
+                        <li><a href="#">Campus Life</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Contact Us</h3>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-map-marker-alt"></i> P.M.B 2090, Agbor, Delta State</li>
+                        <li><i class="fas fa-phone"></i> +234 802 117 4628</li>
+                        <li><i class="fas fa-envelope"></i> admissions@unidel.edu.ng</li>
+                        <li><i class="fas fa-clock"></i> Mon-Fri: 8:00 AM - 5:00 PM</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Student Support</h3>
+                    <ul>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Technical Support</a></li>
+                        <li><a href="#">Download Forms</a></li>
+                        <li><a href="#">Help Center</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2024 University of Delta. All Rights Reserved. | Kofa - Student Management System</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple form validation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const username = document.getElementById('login').value.trim();
+            const password = document.getElementById('password').value.trim();
+            
+            if (!username) {
+                alert('Please enter your username or ID');
+                e.preventDefault();
+                return;
+            }
+            
+            if (!password) {
+                alert('Please enter your password');
+                e.preventDefault();
+                return;
+            }
+        });
+    </script>
+</body>
+</html>
