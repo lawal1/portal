@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNIDEL Student Portal - Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #55074b;
+            --secondary: #7a0a6a;
+            --accent: #9b0d89;
+            --light: #f5f0f5;
+            --dark: #0d0d2b;
+            --alert: #dbb2b7;
+            --page-bg: #eeeeee;
+            --success: #4caf50;
+        }
+        
+        body {
+            background-color: var(--page-bg);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding-top: 70px;
+        }
+        
+        .navbar {
+            background-color: var(--primary);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: white !important;
+        }
+        
+        .sidebar {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+            padding: 20px 0;
+            height: calc(100vh - 90px);
+            position: sticky;
+            top: 80px;
+        }
+        
+        .sidebar .nav-link {
+            color: #555;
+            padding: 12px 20px;
+            border-left: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .sidebar .nav-link:hover {
+            background-color: var(--light);
+            border-left: 3px solid var(--accent);
+        }
+        
+        .sidebar .nav-link.active {
+            background-color: var(--light);
+            color: var(--primary);
+            border-left: 3px solid var(--primary);
+            font-weight: 600;
+        }
+        
+        .sidebar .nav-link i {
+            width: 24px;
+            text-align: center;
+            margin-right: 10px;
+        }
+        
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .user-info {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        .profile-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--light);
+        }
+        
+        .badge-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+        
+        .user-welcome {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #f44336;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .footer {
+            background-color: var(--primary);
+            color: #f0f0f0;
+            padding: 30px 0;
+            margin-top: 40px;
+        }
+        
+        /* Dashboard Cards */
+        .dashboard-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            height: 100%;
+            
+        }
+        .col-lg-6{
+             margin-bottom: 30px !important;
+        }
+        .col-lg-4{
+             margin-bottom: 30px !important;
+        }
+
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+             margin-bottom: 20px !important;
+        }
+        
+        .card-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .card-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+        
+        .card-text {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .card-link {
+            color: var(--primary);
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .card-link:hover {
+            color: var(--secondary);
+        }
+        
+        .card-link i {
+            margin-left: 5px;
+            transition: transform 0.3s;
+        }
+        
+        .card-link:hover i {
+            transform: translateX(3px);
+        }
+        
+        /* Mobile specific styles */
+        @media (max-width: 991px) {
+            .sidebar {
+                height: auto;
+                position: relative;
+                top: 0;
+                margin-bottom: 20px;
+            }
+            
+            .user-info {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-graduation-cap me-2"></i>UNIDX STUDENT PORTAL</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="notificationsDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge">3</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="#"><i class="fas fa-book me-2"></i>New course available</a>
+                            <a class="dropdown-item" href="#"><i class="fas fa-money-bill-wave me-2"></i>Fee payment reminder</a>
+                            <a class="dropdown-item" href="#"><i class="fas fa-calendar me-2"></i>Exam schedule updated</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            <img src="https://ui-avatars.com/api/?name=John+Doe&background=random" class="rounded-circle me-2" width="30" height="30" alt="User">
+                            John Doe
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>My Profile</a>
+                            <a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Sidebar Navigation -->
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <div class="user-info text-center mb-4">
+                        <img src="https://ui-avatars.com/api/?name=John+Doe&background=55074b&color=fff&size=128" class="profile-img mb-3" alt="Student">
+                        <h5 class="mb-1">John Doe</h5>
+                        <p class="text-muted mb-2">Computer Science</p>
+                        <span class="badge bg-success badge-status">Active</span>
+                    </div>
+                    
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#"><i class="fas fa-home"></i> Dashboard</a>
+                        </li>
+                        
+                        <li class="nav-item mt-3">
+                            <span class="nav-link disabled fw-bold">ACADEMIC SERVICES</span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-upload"></i> Upload Result</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-money-bill-wave"></i> Pay School Fee</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-bed"></i> Apply for Accommodation</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-book"></i> Apply for Courses</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-clipboard-check"></i> Check Result</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <!-- Dashboard header hidden on mobile -->
+                <div class="d-none d-lg-block">
+                    <div class="dashboard-header">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h2 class="user-welcome">Welcome back, John!</h2>
+                                <p class="mb-0">Access all your academic services and information</p>
+                            </div>
+                            <div class="col-md-4 text-md-end">
+                                <div class="d-flex justify-content-md-end">
+                                    <span class="badge bg-light text-dark me-2">Current Session: 2024/2025</span>
+                                    <span class="badge bg-light text-dark">Semester: First</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Dashboard Cards -->
+                <div class="row">
+                    <div class="col-md-6 col-lg-4">
+                        <div class="dashboard-card">
+                            <div class="card-icon">
+                                <i class="fas fa-upload"></i>
+                            </div>
+                            <h3 class="card-title">Upload Results</h3>
+                            <p class="card-text">Submit your semester results and academic documents for review.</p>
+                            <a href="#" class="card-link">Go to Upload <i class="fas fa-arrow-right"></i></a>
+                 </div>
+                </div>
+                    
+                    <div class="col-md-6 col-lg-4">
+                        <div class="dashboard-card">
+                            <div class="card-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <h3 class="card-title">Pay School Fees</h3>
+                            <p class="card-text">Make payments for tuition and other school fees securely online.</p>
+                            <a href="#" class="card-link">Make Payment <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-4">
+                        <div class="dashboard-card">
+                            <div class="card-icon">
+                                <i class="fas fa-bed"></i>
+                            </div>
+                            <h3 class="card-title">Apply for Accommodation</h3>
+                            <p class="card-text">Request for hostel accommodation for the current semester.</p>
+                            <a href="#" class="card-link">Apply Now <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-4">
+                        <div class="dashboard-card">
+                            <div class="card-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <h3 class="card-title">Apply for Courses</h3>
+                            <p class="card-text">Register for your courses for the current academic session.</p>
+                            <a href="#" class="card-link">Course Registration <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-4">
+                        <div class="dashboard-card">
+                            <div class="card-icon">
+                                <i class="fas fa-clipboard-check"></i>
+                            </div>
+                            <h3 class="card-title">Check Results</h3>
+                            <p class="card-text">View your examination results and academic performance.</p>
+                            <a href="#" class="card-link">View Results <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-4">
+                        <div class="dashboard-card">
+                            <div class="card-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <h3 class="card-title">Academic Calendar</h3>
+                            <p class="card-text">View important dates and events for the current session.</p>
+                            <a href="#" class="card-link">View Calendar <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Quick Announcements -->
+                 <br>
+                <div class="dashboard-car">
+                    <h3  ></h3>
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">Registration Deadline Extended</h5>
+                                <small>3 days ago</small>
+                            </div>
+                            <p class="mb-1">Course registration deadline has been extended to Friday, October 20th.</p>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">Hostel Allocation</h5>
+                                <small>1 week ago</small>
+                            </div>
+                            <p class="mb-1">Hostel allocation results will be published next Monday.</p>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">Matriculation Ceremony</h5>
+                                <small>2 weeks ago</small>
+                            </div>
+                            <p class="mb-1">Matriculation ceremony for new students holds on November 15th.</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-graduation-cap me-2"></i>UNIX Student Portal</h5>
+                    <p>Providing students with seamless access to academic resources and administrative services.</p>
+                </div>
+                <div class="col-md-3">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light">Academic Calendar</a></li>
+                        <li><a href="#" class="text-light">Course Catalog</a></li>
+                        <li><a href="#" class="text-light">Student Handbook</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Support</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light">Help Desk</a></li>
+                        <li><a href="#" class="text-light">FAQs</a></li>
+                        <li><a href="#" class="text-light">Contact IT Support</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="bg-light">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0">© 2025 University of Delta. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0">Kofa - Student Management System</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle sidebar navigation
+            const navLinks = document.querySelectorAll('.sidebar .nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

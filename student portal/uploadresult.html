@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNIDEL Student Portal - Academic Services</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #55074b;
+            --secondary: #7a0a6a;
+            --accent: #9b0d89;
+            --light: #f5f0f5;
+            --dark: #0d0d2b;
+            --alert: #dbb2b7;
+            --page-bg: #eeeeee;
+            --success: #4caf50;
+        }
+        
+        body {
+            background-color: var(--page-bg);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding-top: 70px;
+        }
+        
+        .navbar {
+            background-color: var(--primary);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: white !important;
+        }
+        
+        .sidebar {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+            padding: 20px 0;
+            height: calc(100vh - 90px);
+            position: sticky;
+            top: 80px;
+        }
+        
+        .sidebar .nav-link {
+            color: #555;
+            padding: 12px 20px;
+            border-left: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .sidebar .nav-link:hover {
+            background-color: var(--light);
+            border-left: 3px solid var(--accent);
+        }
+        
+        .sidebar .nav-link.active {
+            background-color: var(--light);
+            color: var(--primary);
+            border-left: 3px solid var(--primary);
+            font-weight: 600;
+        }
+        
+        .sidebar .nav-link i {
+            width: 24px;
+            text-align: center;
+            margin-right: 10px;
+        }
+        
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .user-info {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        .profile-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--light);
+        }
+        
+        .badge-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+        
+        .user-welcome {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #f44336;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .footer {
+            background-color: var(--primary);
+            color: #f0f0f0;
+            padding: 30px 0;
+            margin-top: 40px;
+        }
+        
+        /* Service Page Styles */
+        .service-container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        
+        .service-header {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .service-title {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+        }
+        
+        .form-section-title {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .course-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+        
+        .course-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .course-card h5 {
+            color: var(--dark);
+        }
+        
+        .course-card .form-check {
+            margin-top: 10px;
+        }
+        
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .result-table th, .result-table td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        
+        .result-table th {
+            background-color: var(--light);
+            color: var(--dark);
+        }
+        
+        .result-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .payment-option {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .payment-option:hover {
+            border-color: var(--accent);
+        }
+        
+        .payment-option.selected {
+            border-color: var(--primary);
+            background-color: rgba(85, 7, 75, 0.05);
+        }
+        
+        .payment-option i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .hostel-option {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        
+        .hostel-option:hover {
+            border-color: var(--accent);
+        }
+        
+        .hostel-option.selected {
+            border-color: var(--primary);
+            background-color: rgba(85, 7, 75, 0.05);
+        }
+        
+        .hostel-option img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        
+        /* Mobile specific styles */
+        @media (max-width: 991px) {
+            .sidebar {
+                height: auto;
+                position: relative;
+                top: 0;
+                margin-bottom: 20px;
+            }
+            
+            .user-info {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-graduation-cap me-2"></i>UNIDX STUDENT PORTAL</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="notificationsDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge">3</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="#"><i class="fas fa-book me-2"></i>New course available</a>
+                            <a class="dropdown-item" href="#"><i class="fas fa-money-bill-wave me-2"></i>Fee payment reminder</a>
+                            <a class="dropdown-item" href="#"><i class="fas fa-calendar me-2"></i>Exam schedule updated</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            <img src="https://ui-avatars.com/api/?name=John+Doe&background=random" class="rounded-circle me-2" width="30" height="30" alt="User">
+                            John Doe
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>My Profile</a>
+                            <a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Sidebar Navigation -->
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <div class="user-info text-center mb-4">
+                        <img src="https://ui-avatars.com/api/?name=John+Doe&background=55074b&color=fff&size=128" class="profile-img mb-3" alt="Student">
+                        <h5 class="mb-1">John Doe</h5>
+                        <p class="text-muted mb-2">Computer Science</p>
+                        <span class="badge bg-success badge-status">Active</span>
+                    </div>
+                    
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+                        </li>
+                        
+                        <li class="nav-item mt-3">
+                            <span class="nav-link disabled fw-bold">ACADEMIC SERVICES</span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="weac-result.html"><i class="fas fa-upload"></i> Enter O-level Result</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="pay-fee.html"><i class="fas fa-money-bill-wave"></i> Pay School Fee</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="accommodation.html"><i class="fas fa-bed"></i> Apply for Accommodation</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="apply-courses.html"><i class="fas fa-book"></i> Apply for Courses</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="check-result.html"><i class="fas fa-clipboard-check"></i> Check Result</a>
+                        </li>
+                        <!-- <li class="nav-item">
+                            <a class="nav-link" href="check-result.html"><i class="fas fa-clipboard-check"></i> Apply for student Loan</a>
+                        </li> -->
+                    </ul>
+                </div>
+            </div>
+            <!--  -->
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <!-- WEAC Result Entry Page -->
+                <div class="service-container" id="weac-result">
+                    <div class="service-header">
+                        <h2 class="service-title"><i class="fas fa-upload me-2"></i>Enter WEAC Result</h2>
+                        <p class="mb-0">Submit your West African Examination Council (WAEC) results for admission processing</p>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i> Please ensure all information provided is accurate as it will be verified with the examination body.
+                    </div>
+                    
+                    <form>
+                        <div class="form-section">
+                            <h4 class="form-section-title">Personal Information</h4>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="exam-number" class="form-label">WEAC Examination Number</label>
+                                    <input type="text" class="form-control" id="exam-number" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="exam-year" class="form-label">Examination Year</label>
+                                    <select class="form-select" id="exam-year" required>
+                                        <option value="">Select Year</option>
+                                        <option value="2023">2023</option>
+                                        <option value="2022">2022</option>
+                                        <option value="2021">2021</option>
+                                        <option value="2020">2020</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-section">
+                            <h4 class="form-section-title">Subject Results</h4>
+                            <p>Enter your grades for each subject taken</p>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="subject1" class="form-label">Subject 1</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="subject1" placeholder="Subject name">
+                                        <select class="form-select" style="max-width: 100px;">
+                                            <option value="">Grade</option>
+                                            <option value="A1">A1</option>
+                                            <option value="B2">B2</option>
+                                            <option value="B3">B3</option>
+                                            <option value="C4">C4</option>
+                                            <option value="C5">C5</option>
+                                            <option value="C6">C6</option>
+                                            <option value="D7">D7</option>
+                                            <option value="E8">E8</option>
+                                            <option value="F9">F9</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="subject2" class="form-label">Subject 2</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="subject2" placeholder="Subject name">
+                                        <select class="form-select" style="max-width: 100px;">
+                                            <option value="">Grade</option>
+                                            <option value="A1">A1</option>
+                                            <option value="B2">B2</option>
+                                            <option value="B3">B3</option>
+                                            <option value="C4">C4</option>
+                                            <option value="C5">C5</option>
+                                            <option value="C6">C6</option>
+                                            <option value="D7">D7</option>
+                                            <option value="E8">E8</option>
+                                            <option value="F9">F9</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="subject3" class="form-label">Subject 3</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="subject3" placeholder="Subject name">
+                                        <select class="form-select" style="max-width: 100px;">
+                                            <option value="">Grade</option>
+                                            <option value="A1">A1</option>
+                                            <option value="B2">B2</option>
+                                            <option value="B3">B3</option>
+                                            <option value="C4">C4</option>
+                                            <option value="C5">C5</option>
+                                            <option value="C6">C6</option>
+                                            <option value="D7">D7</option>
+                                            <option value="E8">E8</option>
+                                            <option value="F9">F9</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="subject4" class="form-label">Subject 4</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="subject4" placeholder="Subject name">
+                                        <select class="form-select" style="max-width: 100px;">
+                                            <option value="">Grade</option>
+                                            <option value="A1">A1</option>
+                                            <option value="B2">B2</option>
+                                            <option value="B3">B3</option>
+                                            <option value="C4">C4</option>
+                                            <option value="C5">C5</option>
+                                            <option value="C6">C6</option>
+                                            <option value="D7">D7</option>
+                                            <option value="E8">E8</option>
+                                            <option value="F9">F9</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="subject5" class="form-label">Subject 5</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="subject5" placeholder="Subject name">
+                                        <select class="form-select" style="max-width: 100px;">
+                                            <option value="">Grade</option>
+                                            <option value="A1">A1</option>
+                                            <option value="B2">B2</option>
+                                            <option value="B3">B3</option>
+                                            <option value="C4">C4</option>
+                                            <option value="C5">C5</option>
+                                            <option value="C6">C6</option>
+                                            <option value="D7">D7</option>
+                                            <option value="E8">E8</option>
+                                            <option value="F9">F9</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="subject6" class="form-label">Subject 6</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="subject6" placeholder="Subject name">
+                                        <select class="form-select" style="max-width: 100px;">
+                                            <option value="">Grade</option>
+                                            <option value="A1">A1</option>
+                                            <option value="B2">B2</option>
+                                            <option value="B3">B3</option>
+                                            <option value="C4">C4</option>
+                                            <option value="C5">C5</option>
+                                            <option value="C6">C6</option>
+                                            <option value="D7">D7</option>
+                                            <option value="E8">E8</option>
+                                            <option value="F9">F9</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button type="button" class="btn btn-outline-primary btn-sm" id="add-subject">
+                                <i class="fas fa-plus me-1"></i> Add Another Subject
+                            </button>
+                        </div>
+                        
+                        <div class="form-section">
+                            <h4 class="form-section-title">Upload Documents</h4>
+                            <div class="mb-3">
+                                <label for="result-upload" class="form-label">Upload WEAC Result (PDF or Image)</label>
+                                <input class="form-control" type="file" id="result-upload" accept=".pdf,.jpg,.jpeg,.png">
+                                <div class="form-text">Max file size: 2MB</div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="button" class="btn btn-secondary me-md-2">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Submit Results</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Pay School Fee Page (hidden by default) -->
+                <div class="service-container" id="pay-fee" style="display: none;">
+                    <div class="service-header">
+                        <h2 class="service-title"><i class="fas fa-money-bill-wave me-2"></i>Pay School Fee</h2>
+                        <p class="mb-0">Make payment for tuition and other school fees</p>
+                    </div>
+                    
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i> Please ensure your payment is completed before the deadline to avoid penalties.
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0">Fee Summary</h5>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <th>Tuition Fee</th>
+                                                <td>₦150,000.00</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Medical Fee</th>
+                                                <td>₦5,000.00</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Library Fee</th>
+                                                <td>₦3,000.00</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Development Levy</th>
+                                                <td>₦7,000.00</td>
+                                            </tr>
+                                            <tr class="table-active">
+                                                <th>Total Amount Due</th>
+                                                <td>₦165,000.00</td>
+                                            </tr>
+                                            <tr class="table-success">
+                                                <th>Amount Paid</th>
+                                                <td>₦0.00</td>
+                                            </tr>
+                                            <tr class="table-danger">
+                                                <th>Balance</th>
+                                                <td>₦165,000.00</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0">Payment Method</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12 mb-3">
+                                            <div class="payment-option" onclick="selectPayment(this, 'card')">
+                                                <i class="fas fa-credit-card"></i>
+                                                <h5>Credit/Debit Card</h5>
+                                                <p class="text-muted">Pay instantly with your Visa, Mastercard or Verve card</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-12 mb-3">
+                                            <div class="payment-option" onclick="selectPayment(this, 'bank')">
+                                                <i class="fas fa-university"></i>
+                                                <h5>Bank Transfer</h5>
+                                                <p class="text-muted">Make transfer directly to the school account</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-12">
+                                            <div class="payment-option" onclick="selectPayment(this, 'remita')">
+                                                <i class="fas fa-qrcode"></i>
+                                                <h5>Remita Payment</h5>
+                                                <p class="text-muted">Generate RRR and pay at any bank branch</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-grid gap-2 mt-4">
+                                        <button class="btn btn-primary" type="button">Proceed to Payment</button>
+                                    </div>
+
+
+                                    <div class="d-grid gap-2 mt-4">
+                                        <button class="btn btn-danger" type="button">Take a Loan</button>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Apply for Accommodation Page (hidden by default) -->
+                <div class="service-container" id="accommodation" style="display: none;">
+                    <div class="service-header">
+                        <h2 class="service-title"><i class="fas fa-bed me-2"></i>Apply for Accommodation</h2>
+                        <p class="mb-0">Apply for hostel accommodation for the current academic session</p>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i> Hostel allocation is based on first-come, first-served basis. Early application is encouraged.
+                    </div>
+                    
+                    <form>
+                        <div class="form-section">
+                            <h4 class="form-section-title">Personal Information</h4>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Matriculation Number</label>
+                                    <input type="text" class="form-control" value="UNIDX/2021/001" readonly>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Current Level</label>
+                                    <input type="text" class="form-control" value="200 Level" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-section">
+                            <h4 class="form-section-title">Hostel Preference</h4>
+                            <p>Select your preferred hostel from the options below</p>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <div class="hostel-option" onclick="selectHostel(this)">
+                                        <img src="https://via.placeholder.com/400x300?text=Male+Hostel+A" alt="Male Hostel A">
+                                        <h5>Male Hostel A</h5>
+                                        <p><strong>Room Type:</strong> 4-man room</p>
+                                        <p><strong>Facilities:</strong> Common bathrooms, Study room, WiFi</p>
+                                        <p><strong>Fee:</strong> ₦45,000 per session</p>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="hostelOption" id="hostel1">
+                                            <label class="form-check-label" for="hostel1">
+                                                Select this hostel
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6 mb-4">
+                                    <div class="hostel-option" onclick="selectHostel(this)">
+                                        <img src="https://via.placeholder.com/400x300?text=Male+Hostel+B" alt="Male Hostel B">
+                                        <h5>Male Hostel B</h5>
+                                        <p><strong>Room Type:</strong> 6-man room</p>
+                                        <p><strong>Facilities:</strong> Ensuite bathrooms, Common room</p>
+                                        <p><strong>Fee:</strong> ₦35,000 per session</p>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="hostelOption" id="hostel2">
+                                            <label class="form-check-label" for="hostel2">
+                                                Select this hostel
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6 mb-4">
+                                    <div class="hostel-option" onclick="selectHostel(this)">
+                                        <img src="https://via.placeholder.com/400x300?text=Female+Hostel+A" alt="Female Hostel A">
+                                        <h5>Female Hostel A</h5>
+                                        <p><strong>Room Type:</strong> 2-man room</p>
+                                        <p><strong>Facilities:</strong> Ensuite bathrooms, Kitchenette, WiFi</p>
+                                        <p><strong>Fee:</strong> ₦60,000 per session</p>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="hostelOption" id="hostel3">
+                                            <label class="form-check-label" for="hostel3">
+                                                Select this hostel
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6 mb-4">
+                                    <div class="hostel-option" onclick="selectHostel(this)">
+                                        <img src="https://via.placeholder.com/400x300?text=Female+Hostel+B" alt="Female Hostel B">
+                                        <h5>Female Hostel B</h5>
+                                        <p><strong>Room Type:</strong> 4-man room</p>
+                                        <p><strong>Facilities:</strong> Common bathrooms, Study area</p>
+                                        <p><strong>Fee:</strong> ₦40,000 per session</p>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="hostelOption" id="hostel4">
+                                            <label class="form-check-label" for="hostel4">
+                                                Select this hostel
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-section">
+                            <h4 class="form-section-title">Special Requests</h4>
+                            <div class="mb-3">
+                                <label for="special-requests" class="form-label">Any special accommodation needs or requests?</label>
+                                <textarea class="form-control" id="special-requests" rows="3"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="button" class="btn btn-secondary me-md-2">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Submit Application</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Apply for Courses Page (hidden by default) -->
+                <div class="service-container" id="apply-courses" style="display: none;">
+                    <div class="service-header">
+                        <h2 class="service-title"><i class="fas fa-book me-2"></i>Apply for Courses</h2>
+                        <p class="mb-0">Register for your courses for the current semester</p>
+                    </div>
+                    
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i> Course registration deadline is <strong>Friday, October 20th, 2023</strong>. Late registration attracts a penalty fee.
+                    </div>
+                    
+                    <form>
+                        <div class="form-section">
+                            <h4 class="form-section-title">Program Information</h4>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Department</label>
+                                    <input type="text" class="form-control" value="Computer Science" readonly>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Current Level</label>
+                                    <input type="text" class="form-control" value="200 Level" readonly>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Academic Session</label>
+                                    <input type="text" class="form-control" value="2023/2024" readonly>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Semester</label>
+                                    <input type="text" class="form-control" value="First Semester" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-section">
+                            <h4 class="form-section-title">Compulsory Courses</h4>
+                            <p>These courses are required for your program</p>
+                            
+                            <div class="course-card">
+                                <h5>CSC 201 - Data Structures and Algorithms</h5>
+                                <p class="text-muted">3 Units | Dr. Adebayo</p>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="course1" checked disabled>
+                                    <label class="form-check-label" for="course1">
+                                        Required for your program
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="course-card">
+                                <h5>CSC 203 - Computer Architecture</h5>
+                                <p class="text-muted">2 Units | Prof. Johnson</p>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="course2" checked disabled>
+                                    <label class="form-check-label" for="course2">
+                                        Required for your program
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="course-card">
+                                <h5>MAT 201 - Mathematical Methods</h5>
+                                <p class="text-muted">3 Units | Dr. Musa</p>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="course3" checked disabled>
+                                    <label class="form-check-label" for="course3">
+                                        Required for your program
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-section">
+                            <h4 class="form-section-title">Elective Courses</h4>
+                            <p>Select at least 2 elective courses from the options below</p>
+                            
+                            <div class="course-card">
+                                <h5>CSC 205 - Artificial Intelligence</h5>
+                                <p class="text-muted">2 Units | Dr. Okonkwo</p>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="elective1">
+                                    <label class="form-check-label" for="elective1">
+                                        Select this elective
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="course-card">
+                                <h5>CSC 207 - Database Systems</h5>
+                                <p class="text-muted">3 Units | Prof. Adeleke</p>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="elective2">
+                                    <label class="form-check-label" for="elective2">
+                                        Select this elective
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="course-card">
+                                <h5>CSC 209 - Computer Networks</h5>
+                                <p class="text-muted">2 Units | Dr. Bello</p>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="elective3">
+                                    <label class="form-check-label" for="elective3">
+                                        Select this elective
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="course-card">
+                                <h5>CSC 211 - Software Engineering</h5>
+                                <p class="text-muted">3 Units | Dr. Williams</p>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="elective4">
+                                    <label class="form-check-label" for="elective4">
+                                        Select this elective
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-section">
+                            <h4 class="form-section-title">General Studies Courses</h4>
+                            <p>Select one GNS course</p>
+                            
+                            <div class="course-card">
+                                <h5>201 - Entrepreneurship Studies</h5>
+<p class="text-muted">2 Units | Dr. Okafor</p>
+<div class="form-check">
+<input class="form-check-input" type="radio" name="gnsCourse" id="gns1">
+<label class="form-check-label" for="gns1">
+Select this course
+</label>
+</div>
+</div>
+                        <div class="course-card">
+                            <h5>GNS 203 - Communication Skills</h5>
+                            <p class="text-muted">2 Units | Dr. Ahmed</p>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="gnsCourse" id="gns2">
+                                <label class="form-check-label" for="gns2">
+                                    Select this course
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="course-card">
+                            <h5>GNS 205 - Nigerian People and Culture</h5>
+                            <p class="text-muted">2 Units | Prof. Balogun</p>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="gnsCourse" id="gns3">
+                                <label class="form-check-label" for="gns3">
+                                    Select this course
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <button type="button" class="btn btn-secondary me-md-2">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Submit Course Registration</button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Check Result Page (hidden by default) -->
+            <div class="service-container" id="check-result" style="display: none;">
+                <div class="service-header">
+                    <h2 class="service-title"><i class="fas fa-clipboard-check me-2"></i>Check Result</h2>
+                    <p class="mb-0">View your examination results and academic performance</p>
+                </div>
+                
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i> Results are displayed after they have been approved and released by your department.
+                </div>
+                
+                <form class="mb-4">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="academic-session" class="form-label">Academic Session</label>
+                            <select class="form-select" id="academic-session">
+                                <option value="2023/2024">2023/2024</option>
+                                <option value="2022/2023">2022/2023</option>
+                                <option value="2021/2022">2021/2022</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="semester" class="form-label">Semester</label>
+                            <select class="form-select" id="semester">
+                                <option value="first">First Semester</option>
+                                <option value="second">Second Semester</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100">View Result</button>
+                        </div>
+                    </div>
+                </form>
+                
+                <div class="card">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">Academic Result - First Semester 2023/2024</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <p><strong>Name:</strong> John Doe</p>
+                                <p><strong>Matric No:</strong> UNIDX/2021/001</p>
+                                <p><strong>Department:</strong> Computer Science</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Level:</strong> 200 Level</p>
+                                <p><strong>Session:</strong> 2023/2024</p>
+                                <p><strong>Semester:</strong> First</p>
+                            </div>
+                        </div>
+                        
+                        <div class="table-responsive">
+                            <table class="result-table">
+                                <thead>
+                                    <tr>
+                                        <th>Course Code</th>
+                                        <th>Course Title</th>
+                                        <th>Unit</th>
+                                        <th>Grade</th>
+                                        <th>Points</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>CSC 201</td>
+                                        <td>Data Structures and Algorithms</td>
+                                        <td>3</td>
+                                        <td>A</td>
+                                        <td>15</td>
+                                    </tr>
+                                    <tr>
+                                        <td>CSC 203</td>
+                                        <td>Computer Architecture</td>
+                                        <td>2</td>
+                                        <td>B</td>
+                                        <td>8</td>
+                                    </tr>
+                                    <tr>
+                                        <td>MAT 201</td>
+                                        <td>Mathematical Methods</td>
+                                        <td>3</td>
+                                        <td>B</td>
+                                        <td>12</td>
+                                    </tr>
+                                    <tr>
+                                        <td>CSC 205</td>
+                                        <td>Artificial Intelligence</td>
+                                        <td>2</td>
+                                        <td>A</td>
+                                        <td>10</td>
+                                    </tr>
+                                    <tr>
+                                        <td>CSC 207</td>
+                                        <td>Database Systems</td>
+                                        <td>3</td>
+                                        <td>C</td>
+                                        <td>9</td>
+                                    </tr>
+                                    <tr>
+                                        <td>GNS 201</td>
+                                        <td>Entrepreneurship Studies</td>
+                                        <td>2</td>
+                                        <td>A</td>
+                                        <td>10</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="2">Total</th>
+                                        <th>15</th>
+                                        <th></th>
+                                        <th>64</th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="4">Grade Point Average (GPA)</th>
+                                        <th>4.27</th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="4">Remark</th>
+                                        <th>Excellent</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <button type="button" class="btn btn-outline-primary me-md-2">
+                                <i class="fas fa-print me-1"></i> Print Result
+                            </button>
+                            <button type="button" class="btn btn-primary">
+                                <i class="fas fa-download me-1"></i> Download PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h5><i class="fas fa-graduation-cap me-2"></i>UNIX Student Portal</h5>
+                <p>Providing students with seamless access to academic resources and administrative services.</p>
+            </div>
+            <div class="col-md-3">
+                <h5>Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="text-light">Academic Calendar</a></li>
+                    <li><a href="#" class="text-light">Course Catalog</a></li>
+                    <li><a href="#" class="text-light">Student Handbook</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <h5>Support</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="text-light">Help Desk</a></li>
+                    <li><a href="#" class="text-light">FAQs</a></li>
+                    <li><a href="#" class="text-light">Contact IT Support</a></li>
+                </ul>
+            </div>
+        </div>
+        <hr class="bg-light">
+        <div class="row">
+            <div class="col-md-6">
+                <p class="mb-0">© 2025 University of Delta. All rights reserved.</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <p class="mb-0">Kofa - Student Management System</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Handle sidebar navigation
+        const navLinks = document.querySelectorAll('.sidebar .nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all links
+                navLinks.forEach(l => l.classList.remove('active'));
+                
+                // Add active class to clicked link
+                this.classList.add('active');
+                
+                // Hide all service containers
+                document.querySelectorAll('.service-container').forEach(container => {
+                    container.style.display = 'none';
+                });
+                
+                // Show the selected service container
+                const targetId = this.getAttribute('href').replace('.html', '');
+                document.getElementById(targetId).style.display = 'block';
+            });
+        });
+        
+        // Initialize by showing the WEAC result page
+        document.getElementById('weac-result').style.display = 'block';
+    });
+    
+    function selectPayment(element, type) {
+        // Remove selected class from all payment options
+        document.querySelectorAll('.payment-option').forEach(option => {
+            option.classList.remove('selected');
+        });
+        
+        // Add selected class to clicked option
+        element.classList.add('selected');
+        
+        // You would typically set the payment method value here
+        console.log('Selected payment method:', type);
+    }
+    
+    function selectHostel(element) {
+        // Remove selected class from all hostel options
+        document.querySelectorAll('.hostel-option').forEach(option => {
+            option.classList.remove('selected');
+        });
+        
+        // Add selected class to clicked option
+        element.classList.add('selected');
+        
+        // Check the radio button inside this option
+        const radio = element.querySelector('.form-check-input');
+        radio.checked = true;
+    }
+    
+    // Function to add another subject field
+    document.getElementById('add-subject').addEventListener('click', function() {
+        const subjectsContainer = document.querySelector('.form-section .row');
+        const subjectCount = subjectsContainer.querySelectorAll('[id^="subject"]').length;
+        
+        if (subjectCount >= 9) {
+            alert('Maximum of 9 subjects allowed');
+            return;
+        }
+        
+        const newSubjectId = subjectCount + 1;
+        const newSubjectHtml = `
+            <div class="col-md-6 mb-3">
+                <label for="subject${newSubjectId}" class="form-label">Subject ${newSubjectId}</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="subject${newSubjectId}" placeholder="Subject name">
+                    <select class="form-select" style="max-width: 100px;">
+                        <option value="">Grade</option>
+                        <option value="A1">A1</option>
+                        <option value="B2">B2</option>
+                        <option value="B3">B3</option>
+                        <option value="C4">C4</option>
+                        <option value="C5">C5</option>
+                        <option value="C6">C6</option>
+                        <option value="D7">D7</option>
+                        <option value="E8">E8</option>
+                        <option value="F9">F9</option>
+                    </select>
+                </div>
+            </div>
+        `;
+        
+        subjectsContainer.insertAdjacentHTML('beforeend', newSubjectHtml);
+    });
+</script>

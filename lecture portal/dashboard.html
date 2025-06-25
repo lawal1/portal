@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNIDEL Lecturer Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #006633; /* Green color for lecturer portal */
+            --secondary: #004d26;
+            --accent: #00994d;
+            --light: #f0f7f3;
+            --dark: #0d1f0d;
+            --alert: #dbb2b7;
+            --page-bg: #f5f5f5;
+            --success: #4caf50;
+        }
+        
+        body {
+            background-color: var(--page-bg);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding-top: 70px;
+        }
+        
+        .navbar {
+            background-color: var(--primary);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: white !important;
+        }
+        
+        .sidebar {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+            padding: 20px 0;
+            height: calc(100vh - 90px);
+            position: sticky;
+            top: 80px;
+        }
+        
+        .sidebar .nav-link {
+            color: #555;
+            padding: 12px 20px;
+            border-left: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .sidebar .nav-link:hover {
+            background-color: var(--light);
+            border-left: 3px solid var(--accent);
+        }
+        
+        .sidebar .nav-link.active {
+            background-color: var(--light);
+            color: var(--primary);
+            border-left: 3px solid var(--primary);
+            font-weight: 600;
+        }
+        
+        .sidebar .nav-link i {
+            width: 24px;
+            text-align: center;
+            margin-right: 10px;
+        }
+        
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .user-info {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        .profile-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--light);
+        }
+        
+        .badge-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+        
+        .user-welcome {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #f44336;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .footer {
+            background-color: var(--primary);
+            color: #f0f0f0;
+            padding: 30px 0;
+            margin-top: 40px;
+        }
+        
+        /* Lecturer Page Styles */
+        .service-container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        
+        .service-header {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .service-title {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+        }
+        
+        .form-section-title {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .course-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+        
+        .course-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .course-card h5 {
+            color: var(--dark);
+        }
+        
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .result-table th, .result-table td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        
+        .result-table th {
+            background-color: var(--light);
+            color: var(--dark);
+        }
+        
+        .result-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .student-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .student-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            transition: all 0.3s;
+        }
+        
+        .student-item:hover {
+            background-color: var(--light);
+        }
+        
+        .student-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        
+        .student-info {
+            flex-grow: 1;
+        }
+        
+        .student-name {
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        
+        .student-id {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Mobile specific styles */
+        @media (max-width: 991px) {
+            .sidebar {
+                height: auto;
+                position: relative;
+                top: 0;
+                margin-bottom: 20px;
+            }
+            
+            .user-info {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-chalkboard-teacher me-2"></i>UNIDX LECTURER PORTAL</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="notificationsDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge">2</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="#"><i class="fas fa-user-graduate me-2"></i>New course assignment</a>
+                            <a class="dropdown-item" href="#"><i class="fas fa-calendar me-2"></i>Department meeting scheduled</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            <img src="https://ui-avatars.com/api/?name=Prof+Smith&background=random" class="rounded-circle me-2" width="30" height="30" alt="User">
+                            Prof. Smith
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>My Profile</a>
+                            <a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Sidebar Navigation -->
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <div class="user-info text-center mb-4">
+                        <img src="https://ui-avatars.com/api/?name=Prof+Smith&background=006633&color=fff&size=128" class="profile-img mb-3" alt="Lecturer">
+                        <h5 class="mb-1">Prof. Smith Johnson</h5>
+                        <p class="text-muted mb-2">Department of Computer Science</p>
+                        <span class="badge bg-success badge-status">Active</span>
+                    </div>
+                    
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="lecturer-dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+                        </li>
+                        
+                        <li class="nav-item mt-3">
+                            <span class="nav-link disabled fw-bold">ACADEMIC SERVICES</span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="view-sessions.html"><i class="fas fa-calendar-alt"></i> View Sessions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="assigned-courses.html"><i class="fas fa-book"></i> Assigned Courses</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="view-students.html"><i class="fas fa-users"></i> View Students</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="enter-results.html"><i class="fas fa-edit"></i> Enter Results</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="create-course.html"><i class="fas fa-plus-circle"></i> Create Course</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="course-adviser.html"><i class="fas fa-user-tie"></i> Course Adviser</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <!-- View Sessions Page -->
+                <div class="service-container" id="view-sessions">
+                    <div class="service-header">
+                        <h2 class="service-title"><i class="fas fa-calendar-alt me-2"></i>Academic Sessions</h2>
+                        <p class="mb-0">View and manage academic sessions and semesters</p>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i> Current session is highlighted. Click on a session to view details.
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Academic Session</th>
+                                    <th>Semester</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-success">
+                                    <td>2023/2024</td>
+                                    <td>First Semester</td>
+                                    <td>Oct 2, 2023</td>
+                                    <td>Jan 26, 2024</td>
+                                    <td><span class="badge bg-success">Active</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary">View</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2023/2024</td>
+                                    <td>Second Semester</td>
+                                    <td>Mar 4, 2024</td>
+                                    <td>Jun 28, 2024</td>
+                                    <td><span class="badge bg-secondary">Upcoming</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-secondary">View</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2022/2023</td>
+                                    <td>Second Semester</td>
+                                    <td>Mar 6, 2023</td>
+                                    <td>Jun 30, 2023</td>
+                                    <td><span class="badge bg-info">Completed</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-info">View</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2022/2023</td>
+                                    <td>First Semester</td>
+                                    <td>Oct 3, 2022</td>
+                                    <td>Jan 27, 2023</td>
+                                    <td><span class="badge bg-info">Completed</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-info">View</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <button type="button" class="btn btn-primary">
+                            <i class="fas fa-plus me-1"></i> Add New Session
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Assigned Courses Page (hidden by default) -->
+                <div class="service-container" id="assigned-courses" style="display: none;">
+                    <div class="service-header">
+                        <h2 class="service-title"><i class="fas fa-book me-2"></i>Assigned Courses</h2>
+                        <p class="mb-0">Courses assigned to you for the current and previous semesters</p>
+                    </div>
+                    
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i> Please confirm your course assignments and report any discrepancies to your HOD.
+                    </div>
+                    
+                    <ul class="nav nav-tabs mb-4" id="coursesTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="current-tab" data-bs-toggle="tab" data-bs-target="#current" type="button" role="tab">Current Semester</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="previous-tab" data-bs-toggle="tab" data-bs-target="#previous" type="button" role="tab">Previous Semesters</button>
+                        </li>
+                    </ul>
+                    
+                    <div class="tab-content" id="coursesTabContent">
+                        <div class="tab-pane fade show active" id="current" role="tabpanel">
+                            <div class="card mb-4">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0">First Semester 2023/2024</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="course-card">
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <h5>CSC 201 - Data Structures and Algorithms</h5>
+                                                <p class="text-muted">3 Units | Computer Science</p>
+                                                <p><strong>Schedule:</strong> Mon 10am-12pm, Wed 2pm-3pm (LT3)</p>
+                                                <p><strong>Students:</strong> 85 registered</p>
+                                            </div>
+                                            <div class="col-md-4 text-md-end">
+                                                <div class="d-grid gap-2">
+                                                    <button class="btn btn-sm btn-outline-primary">View Students</button>
+                                                    <button class="btn btn-sm btn-outline-success">Enter Results</button>
+                                                    <button class="btn btn-sm btn-outline-info">Course Materials</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="course-card">
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <h5>CSC 205 - Artificial Intelligence</h5>
+                                                <p class="text-muted">2 Units | Computer Science</p>
+                                                <p><strong>Schedule:</strong> Tue 9am-11am (Lab 2)</p>
+                                                <p><strong>Students:</strong> 62 registered</p>
+                                            </div>
+                                            <div class="col-md-4 text-md-end">
+                                                <div class="d-grid gap-2">
+                                                    <button class="btn btn-sm btn-outline-primary">View Students</button>
+                                                    <button class="btn btn-sm btn-outline-success">Enter Results</button>
+                                                    <button class="btn btn-sm btn-outline-info">Course Materials</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tab-pane fade" id="previous" role="tabpanel">
+                            <div class="accordion" id="previousCourses">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#secondSem2023">
+                                            Second Semester 2022/2023
+                                        </button>
+                                    </h2>
+                                    <div id="secondSem2023" class="accordion-collapse collapse" data-bs-parent="#previousCourses">
+                                        <div class="accordion-body">
+                                            <div class="course-card">
+                                                <h5>CSC 202 - Computer Networks</h5>
+                                                <p class="text-muted">3 Units | Computer Science</p>
+                                                <p><strong>Students:</strong> 78 registered</p>
+                                                <button class="btn btn-sm btn-outline-primary mt-2">View Details</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#firstSem2023">
+                                            First Semester 2022/2023
+                                        </button>
+                                    </h2>
+                                    <div id="firstSem2023" class="accordion-collapse collapse" data-bs-parent="#previousCourses">
+                                        <div class="accordion-body">
+                                            <div class="course-card">
+                                                <h5>CSC 201 - Data Structures and Algorithms</h5>
+                                                <p class="text-muted">3 Units | Computer Science</p>
+                                                <p><strong>Students:</strong> 72 registered</p>
+                                                <button class="btn btn-sm btn-outline-primary mt-2">View Details</button>
+                                            </div>
+                                            
+                                            <div class="course-card">
+                                                <h5>CSC 203 - Database Systems</h5>
+                                                <p class="text-muted">2 Units | Computer Science</p>
+                                                <p><strong>Students:</strong> 68 registered</p>
+                                                <button class="btn btn-sm btn-outline-primary mt-2">View Details</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- View Students Page (hidden by default) -->
+                <div class="service-container" id="view-students" style="display: none;">
+                    <div class="service-header">
+                        <h2 class="service-title"><i class="fas fa-users me-2"></i>View Students</h2>
+                        <p class="mb-0">Students registered for your courses</p>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label for="select-course" class="form-label">Select Course</label>
+                            <select class="form-select" id="select-course">
+                                <option value="">-- Select a course --</option>
+                                <option value="csc201" selected>CSC 201 - Data Structures and Algorithms</option>
+                                <option value="csc205">CSC 205 - Artificial Intelligence</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="search-student" class="form-label">Search Student</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="search-student" placeholder="Name or matric number">
+                                <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">CSC 201 - Data Structures and Algorithms</h5>
+                            <span class="badge bg-primary">85 Students</span>
+                        </div>
+                        <div class="card-body">
+                            <ul class="student-list">
+                                <li class="student-item">
+                                    <img src="https://ui-avatars.com/api/?name=John+Doe&background=random" class="student-avatar" alt="Student">
+                                    <div class="student-info">
+                                        <div class="student-name">John Doe</div>
+                                        <div class="student-id">UNIDX/2021/001 | Computer Science</div>
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-primary">View Profile</button>
+                                </li>
+                                <li class="student-item">
+                                    <img src="https://ui-avatars.com/api/?name=Jane+Smith&background=random" class="student-avatar" alt="Student">
+                                    <div class="student-info">
+                                        <div class="student-name">Jane Smith</div>
+                                        <div class="student-id">UNIDX/2021/002 | Computer Science</div>
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-primary">View Profile</button>
+                                </li>
+                                <li class="student-item">
+                                    <img src="https://ui-avatars.com/api/?name=Michael+Johnson&background=random" class="student-avatar" alt="Student">
+                                    <div class="student-info">
+                                        <div class="student-name">Michael Johnson</div>
+                                        <div class="student-id">UNIDX/2021/003 | Computer Science</div>
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-primary">View Profile</button>
+                                </li>
+                                <li class="student-item">
+                                    <img src="https://ui-avatars.com/api/?name=Sarah+Williams&background=random" class="student-avatar" alt="Student">
+                                    <div class="student-info">
+                                        <div class="student-name">Sarah Williams</div>
+                                        <div class="student-id">UNIDX/2021/004 | Computer Science</div>
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-primary">View Profile</button>
+                                </li>
+                                <li class="student-item">
+                                    <img src="https://ui-avatars.com/api/?name=David+Brown&background=random" class="student-avatar" alt="Student">
+                                    <div class="student-info">
+                                        <div class="student-name">David Brown</div>
+                                        <div class="student-id">UNIDX/2021/005 | Computer Science</div>
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-primary">View Profile</button>
+                                </li>
+                            </ul>
+                            
+                            <nav aria-label="Page navigation" class="mt-4">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Enter Results Page (hidden by default) -->
+                <div class="service-container" id="enter-results" style="display: none;">
+                    <div class="service-header">
+                        <h2 class="service-title"><i class="fas fa-edit me-2"></i>Enter Results</h2>
+                        <p class="mb-0">Enter Continuous Assessment and Examination scores for your courses</p>
+                    </div>
+                    
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i> Results submission deadline is <strong>Friday, January 19th, 2024</strong>. Late submission may attract penalties.
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label for="result-course" class="form-label">Select Course</label>
+                            <select class="form-select" id="result-course">
+                                <option value="">-- Select a course --</option>
+                                <option value="csc201" selected>CSC 201 - Data Structures and Algorithms</option>
+                                <option value="csc205">CSC 205 - Artificial Intelligence</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="result-session" class="form-label">Academic Session</label>
+                            <select class="form-select" id="result-session">
+                                <option value="2023/2024" selected>2023/2024</option>
+                                <option value="2022/2023">2022/2023</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">Enter Scores for CSC 201 - Data Structures and Algorithms</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="result-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Matric No</th>
+                                            <th>Student Name</th>
+                                            <th>CA (30%)</th>
+                                            <th>Exam (70%)</th>
+                                            <th>Total (100%)</th>
+                                            <th>Grade</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>UNIDX/2021/001</td>
+                                            <td>John Doe</td>
+                                            <td><input type="number" class="form-control form-control-sm" value="25" min="0" max="30"></td>
+                                            <td><input type="number" class="form-control form-control-sm" value="68" min="0" max="70"></td>
+                                            <td>93</td>
+                                            <td>A</td>
+                                        </tr>
+                                        <tr>
+                                            <td>UNIDX/2021/002</td>
+                                            <td>Jane Smith</td>
+                                            <td><input type="number" class="form-control form-control-sm" value="28" min="0" max="30"></td>
+                                            <td><input type="number" class="form-control form-control-sm" value="65" min="0" max="70"></td>
+                                            <td>93</td>
+                                            <td>A</td>
+                                        </tr>
+                                        <tr>
+                                            <td>UNIDX/2021/003</td>
+                                            <td>Michael Johnson</td>
+                                            <td><input type="number" class="form-control form-control-sm" value="22" min="0" max="30"></td>
+                                            <td><input type="number" class="form-control form-control-sm" value="58" min="0" max="70"></td>
+                                            <td>80</td>
+                                            <td>B</td>
+                                        </tr>
+                                        <tr>
+                                            <td>UNIDX/2021/004</td>
+                                            <td>Sarah Williams</td>
+                                            <td><input type="number" class="form-control form-control-sm" value="20" min="0" max="30"></td>
+                                            <td><input type="number" class="form-control form-control-sm" value="52" min="0" max="70"></td>
+                                            <td>72</td>
+                                            <td>B</td>
+                                        </tr>
+                                        <tr>
+                                            <td>UNIDX/2021/005</td>
+                                            <td>David Brown</td>
+                                            <td><input type="number" class="form-control form-control-sm" value="18" min="0" max="30"></td>
+                                            <td><input type="number" class="form-control form-control-sm" value="48" min="0" max="70"></td>
+                                            <td>66</td>
+                                            <td>C</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                                <button type="button" class="btn btn-secondary me-md-2">Cancel</button>
+                                <button type="button" class="btn btn-primary">Save Draft</button>
+                                <button type="button" class="btn btn-success">Submit Results</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Create Course Page (hidden by default) -->
+                <div class="service-container" id="create-course" style="display: none;">
+                    <div class="service-header">
+                        <h2 class="service-title"><i class="fas fa-plus-circle me-2"></i>Create New Course</h2>
+                        <p class="mb-0">Propose a new course for the department's curriculum</p>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i> New courses require approval from the department curriculum committee.
+                    </div>
+                    
+                    <form>
+                        <div class="form-section">
+                            <h4 class="form-section-title">Course Information</h4>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="course-code" class="form-label">Course Code</label>
+                                    <input type="text" class="form-control" id="course-code" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="course-title" class="form-label">Course Title</label>
+                                    <input type="text" class="form-control" id="course-title" required>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="course-units" class="form-label">Credit Units</label>
+                                    <select class="form-select" id="course-units" required>
+                                        <option value="">Select units</option>
+                                        <option value="1">1 Unit</option>
+                                        <option value="2">2 Units</option>
+                                        <option value="3">3 Units</option>
+                                        <option value="4">4 Units</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="course-level" class="form-label">Level</label>
+                                    <select class="form-select" id="course-level" required>
+                                        <option value="">Select level</option>
+                                        <option value="100">100 Level</option>
+                                        <option value="200">200 Level</option>
+                                        <option value="300">300 Level</option>
+                                        <option value="400">400 Level</option>
+                                        <option value="500">500 Level</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="course-semester" class="form-label">Semester</label>
+                                    <select class="form-select" id="course-semester" required>
+                                        <option value="">Select semester</option>
+                                        <option value="first">First Semester</option>
+                                        <option value="second">Second Semester</option>
+                                    </select>
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <label for="course-description" class="form-label">Course Description</label>
+                                    <textarea class="form-control" id="course-description" rows="3" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-section">
+                            <h4 class="form-section-title">Assessment Weighting</h4>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label for="weight-ca" class="form-label">Continuous Assessment (%)</label>
+                                    <input type="number" class="form-control" id="weight-ca" min="0" max="100" value="30" required>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="weight-exam" class="form-label">Examination (%)</label>
+                                    <input type="number" class="form-control" id="weight-exam" min="0" max="100" value="70" required>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="weight-other" class="form-label">Other (%)</label>
+                                    <input type="number" class="form-control" id="weight-other" min="0" max="100" value="0" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-section">
+                            <h4 class="form-section-title">Course Materials</h4>
+                            <div class="mb-3">
+                                <label for="course-outline" class="form-label">Upload Course Outline (PDF)</label>
+                                <input class="form-control" type="file" id="course-outline" accept=".pdf">
+                            </div>
+                            <div class="mb-3">
+                                <label for="reference-materials" class="form-label">Upload Reference Materials (ZIP)</label>
+                                <input class="form-control" type="file" id="reference-materials" accept=".zip">
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="button" class="btn btn-secondary me-md-2">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Submit for Approval</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Course Adviser Page (hidden by default) -->
+                <div class="service-container" id="course-adviser" style="display: none;">
+                    <div class="service-header">
+                        <h2 class="service-title"><i class="fas fa-user-tie me-2"></i>Course Adviser</h2>
+                        <p class="mb-0">Manage students assigned to you as their course adviser</p>
+                    </div>
+                    
+                    <div class="alert alert-success">
+<i class="fas fa-info-circle me-2"></i> You are currently the course adviser for <strong>200 Level Computer Science</strong> students.
+</div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">Advised Students</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="flex-grow-1">
+                                        <h3 class="mb-0">42</h3>
+                                        <p class="text-muted mb-0">Students under your guidance</p>
+                                    </div>
+                                    <div class="flex-shrink-0">
+                                        <i class="fas fa-users fa-2x text-primary"></i>
+                                    </div>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Male Students
+                                        <span class="badge bg-primary rounded-pill">28</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Female Students
+                                        <span class="badge bg-primary rounded-pill">14</span>
+                                    </li>
+                                </ul>
+                                <button class="btn btn-outline-primary w-100 mt-3">View All Students</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">Academic Performance</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="flex-grow-1">
+                                        <h3 class="mb-0">3.72</h3>
+                                        <p class="text-muted mb-0">Average GPA (Last Semester)</p>
+                                    </div>
+                                    <div class="flex-shrink-0">
+                                        <i class="fas fa-chart-line fa-2x text-success"></i>
+                                    </div>
+                                </div>
+                                <div class="progress mb-2" style="height: 20px;">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">First Class (25%)</div>
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: 40%;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">Second Class (40%)</div>
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">Third Class (30%)</div>
+                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 5%;" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100">Others (5%)</div>
+                                </div>
+                                <button class="btn btn-outline-success w-100 mt-2">View Performance Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Recent Student Appointments</h5>
+                        <button class="btn btn-sm btn-primary">Schedule New Appointment</button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Student</th>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Purpose</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>John Doe (UNIDX/2021/001)</td>
+                                        <td>Jan 15, 2024</td>
+                                        <td>10:00 AM</td>
+                                        <td>Course registration issues</td>
+                                        <td><span class="badge bg-success">Completed</span></td>
+                                        <td><button class="btn btn-sm btn-outline-primary">View</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Jane Smith (UNIDX/2021/002)</td>
+                                        <td>Jan 16, 2024</td>
+                                        <td>2:30 PM</td>
+                                        <td>Academic counseling</td>
+                                        <td><span class="badge bg-warning">Pending</span></td>
+                                        <td><button class="btn btn-sm btn-outline-primary">View</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Michael Johnson (UNIDX/2021/003)</td>
+                                        <td>Jan 18, 2024</td>
+                                        <td>11:00 AM</td>
+                                        <td>Project supervision</td>
+                                        <td><span class="badge bg-info">Scheduled</span></td>
+                                        <td><button class="btn btn-sm btn-outline-primary">View</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h5><i class="fas fa-chalkboard-teacher me-2"></i>UNIX LECTURER PORTAL</h5>
+                <p>Providing lecturers with tools for effective course management and student engagement.</p>
+            </div>
+            <div class="col-md-3">
+                <h5>Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="text-light">Academic Calendar</a></li>
+                    <li><a href="#" class="text-light">Department Portal</a></li>
+                    <li><a href="#" class="text-light">Research Resources</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <h5>Support</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="text-light">IT Help Desk</a></li>
+                    <li><a href="#" class="text-light">Academic Office</a></li>
+                    <li><a href="#" class="text-light">Contact Administration</a></li>
+                </ul>
+            </div>
+        </div>
+        <hr class="bg-light">
+        <div class="row">
+            <div class="col-md-6">
+                <p class="mb-0">© 2025 University of Delta. All rights reserved.</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <p class="mb-0">Kofa - Academic Management System</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Handle sidebar navigation
+        const navLinks = document.querySelectorAll('.sidebar .nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all links
+                navLinks.forEach(l => l.classList.remove('active'));
+                
+                // Add active class to clicked link
+                this.classList.add('active');
+                
+                // Hide all service containers
+                document.querySelectorAll('.service-container').forEach(container => {
+                    container.style.display = 'none';
+                });
+                
+                // Show the selected service container
+                const targetId = this.getAttribute('href').replace('.html', '');
+                document.getElementById(targetId).style.display = 'block';
+            });
+        });
+        
+        // Initialize by showing the view sessions page
+        document.getElementById('view-sessions').style.display = 'block';
+        
+        // Calculate total and grade when CA or Exam scores change
+        const scoreInputs = document.querySelectorAll('#enter-results input[type="number"]');
+        scoreInputs.forEach(input => {
+            input.addEventListener('change', function() {
+                const row = this.closest('tr');
+                const caInput = row.querySelector('input:nth-of-type(1)');
+                const examInput = row.querySelector('input:nth-of-type(2)');
+                const totalCell = row.querySelector('td:nth-of-type(5)');
+                const gradeCell = row.querySelector('td:nth-of-type(6)');
+                
+                const caScore = parseFloat(caInput.value) || 0;
+                const examScore = parseFloat(examInput.value) || 0;
+                const totalScore = caScore + examScore;
+                
+                totalCell.textContent = totalScore;
+                
+                // Determine grade
+                let grade = '';
+                if (totalScore >= 70) grade = 'A';
+                else if (totalScore >= 60) grade = 'B';
+                else if (totalScore >= 50) grade = 'C';
+                else if (totalScore >= 45) grade = 'D';
+                else grade = 'F';
+                
+                gradeCell.textContent = grade;
+            });
+        });
+    });
+</script>
